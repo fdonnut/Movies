@@ -1,23 +1,31 @@
 package com.donnut.movies;
 
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@Entity(tableName = "favorite_movies")
 public class Movie implements Serializable {
 
+    @PrimaryKey
     @SerializedName("id")
-    private int id;
+    private final int id;
     @SerializedName("name")
-    private String name;
+    private final String name;
     @SerializedName("description")
-    private String description;
+    private final String description;
     @SerializedName("year")
-    private int year;
+    private final int year;
     @SerializedName("poster")
-    private Poster poster;
+    @Embedded
+    private final Poster poster;
     @SerializedName("rating")
-    private Rating rating;
+    @Embedded
+    private final Rating rating;
 
     public Movie(int id, String name, String description, int year, Poster poster, Rating rating) {
         this.id = id;
