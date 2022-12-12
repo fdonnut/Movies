@@ -12,15 +12,15 @@ import io.reactivex.rxjava3.core.Completable;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM favorite_movies")
-    LiveData<List<Movie>> getAllFavoriteMovies();
+    @Query("SELECT * FROM favourite_movies")
+    LiveData<List<Movie>> getAllFavouriteMovies();
 
-    @Query("SELECT * FROM favorite_movies WHERE id = :movieId")
-    LiveData<Movie> getFavoriteMovie(int movieId);
+    @Query("SELECT * FROM favourite_movies WHERE id = :movieId")
+    LiveData<Movie> getFavouriteMovie(int movieId);
 
     @Insert
     Completable insertMovie(Movie movie);
 
-    @Query("DELETE FROM favorite_movies WHERE id = :movieId")
+    @Query("DELETE FROM favourite_movies WHERE id = :movieId")
     Completable removeMovie(int movieId);
 }
