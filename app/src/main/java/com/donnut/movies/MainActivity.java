@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -18,12 +20,13 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewMovies;
     private MoviesAdapter moviesAdapter;
+    private ProgressBar progressBarLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
+        initViews();
         moviesAdapter = new MoviesAdapter();
         recyclerViewMovies.setAdapter(moviesAdapter);
         recyclerViewMovies.setLayoutManager(new GridLayoutManager(this, 2));
@@ -34,6 +37,26 @@ public class MainActivity extends AppCompatActivity {
                 moviesAdapter.setMovies(movies);
             }
         });
-        viewModel.loadMovies();
+        viewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if (isLoading) {
+                    progressBarLoading.setVisibility(View.VISIBLE);
+                } else {
+                    progressBarLoading.setVisibility(View.GONE);
+                }
+            }
+        });
+        moviesAdapter.setOnReachEndListener(new MoviesAdapter.OnReachEndListener() {
+            @Override
+            public void onReachEnd() {
+                viewModel.loadMovies();
+            }
+        });
+    }
+
+    private void initViews() {
+        progressBarLoading = findViewById(R.id.progressBarLoading);
+        recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
     }
 }
